@@ -199,12 +199,990 @@ while true; do
       ;;
     1 )
 (
-      dialog --title "Colocar codigo" --msgbox 'Gestión de usuarios' 6 20
+      
+
+#!/bin/bash
+
+# while-menu-dialog: a menu driven system information program
+
+DIALOG_CANCEL=1
+DIALOG_ESC=255
+HEIGHT=0
+WIDTH=0
+
+display_result() {
+  dialog --title "$1" \
+    --no-collapse \
+    --msgbox "$result" 0 0
+}
+
+while true; do
+  exec 3>&1
+  selection=$(dialog \
+    --backtitle "Gestión" \
+    --title "Gestión de usuarios" \
+    --clear \
+    --cancel-label "Cancelar" \
+    --menu "Seleccione una opción" $HEIGHT $WIDTH 4 \
+    "1" "​Listar usuarios" \
+    "2" "Crear usuarios nuevos" \
+    "3" "Modificar usuarios" \
+    "4" "Eliminar usuarios." \
+    2>&1 1>&3)
+  exit_status=$?
+  exec 3>&-
+  case $exit_status in
+    $DIALOG_CANCEL)
+      clear
+      echo "Modulo finalizada."
+      exit
+      ;;
+    $DIALOG_ESC)
+      clear
+      echo "Aplicación cancelada." >&2
+      exit 1
+      ;;
+  esac
+  case $selection in
+    0 )
+      clear
+      echo "Aplicación finalizada."
+      ;;
+    1 )
+(
+      result=$(cat /etc/passwd)
+      display_result "Lista de usuarios"
 )
       ;;
     2 )
 (
-      dialog --title "Colocar codigo" --msgbox 'Gestión de grupos' 6 20
+
+      #!/bin/sh
+      DIALOG=${DIALOG=dialog}
+      tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+      trap "rm -f $tempfile" 0 1 2 5 15
+
+      $DIALOG --title "Nombre del nuevo usuario" --clear \
+      --inputbox "Creación de nuevo usuario\n\n\n
+      Digite el nombre del usuario:" 16 51 2> $tempfile
+
+      retval=$?
+
+      case $retval in
+      0)
+	nomusu=`cat $tempfile`
+(
+
+
+      #!/bin/sh
+      DIALOG=${DIALOG=dialog}
+      tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+      trap "rm -f $tempfile" 0 1 2 5 15
+
+      $DIALOG --title "Contraseña del nuevo usuario" --clear \
+      --passwordbox "Enter your password" 10 30 2> $tempfile
+
+      retval=$?
+
+      case $retval in
+      0)
+	contrausu=`cat $tempfile`
+	sudo useradd -p $contrausu -s /bin/bash $nomusu
+        dialog --title "Usuario" --msgbox "Usuario creado exitosamente" 6 50
+          ;;
+      1)
+          echo "Cancel pressed.";;
+    255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      else
+          echo "ESC pressed."
+          fi
+          ;;
+    esac      
+
+
+)
+          ;;
+      1)
+          echo "Cancel pressed.";;
+    255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      else
+          echo "ESC pressed."
+          fi
+          ;;
+    esac      
+
+
+)
+      ;;
+    3 )
+
+
+(
+
+
+
+
+      #!/bin/bash
+
+# while-menu-dialog: a menu driven system information program
+
+DIALOG_CANCEL=1
+DIALOG_ESC=255
+HEIGHT=0
+WIDTH=0
+
+display_result() {
+  dialog --title "$1" \
+    --no-collapse \
+    --msgbox "$result" 0 0
+}
+
+while true; do
+  exec 3>&1
+  selection=$(dialog \
+    --backtitle "Modificar usuario" \
+    --title "Menu" \
+    --clear \
+    --cancel-label "Salir" \
+    --menu "Seleccione el criterio a modificar:" $HEIGHT $WIDTH 4 \
+    "1" "Modificar el nombre de usuario" \
+    "2" "Modificar grupo al que pertenece" \
+    "3" "Agregar a otro grupo" \
+    "4" "Modificar contraseña de usuario" \
+    "5" "Desactivar usuario" \
+    "6" "Activar usuario" \
+    2>&1 1>&3)
+  exit_status=$?
+  exec 3>&-
+  case $exit_status in
+    $DIALOG_CANCEL)
+      clear
+      echo "Program terminated."
+      exit
+      ;;
+    $DIALOG_ESC)
+      clear
+      echo "Program aborted." >&2
+      exit 1
+      ;;
+  esac
+  case $selection in
+    0 )
+      clear
+      echo "Program terminated."
+      ;;
+    1 )
+(
+		#!/bin/sh
+		DIALOG=${DIALOG=dialog}
+		tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+		trap "rm -f $tempfile" 0 1 2 5 15
+
+		$DIALOG --title "Modificar nombre de usuario" --clear \
+		--inputbox "Digite el nombre del usuario a modificar" 10 30 2> $tempfile
+
+		retval=$?
+
+		case $retval in
+		0)
+		NomUsuario=`cat $tempfile`
+
+		(
+		#!/bin/sh
+	      	DIALOG=${DIALOG=dialog}
+	      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+	      	trap "rm -f $tempfile" 0 1 2 5 15
+
+	      	$DIALOG --title "Modificar nombre de usuario" --clear \
+	      	--inputbox "Digite el nuevo nombre del usuario" 10 30 2> $tempfile
+
+	      	retval=$?
+
+	      	case $retval in
+	      	0)
+		NueNomUsuario=`cat $tempfile`
+		sudo usermod -l $NueNomUsuario $NomUsuario
+		sudo usermod -d /home/$NueNomUsuario $NueNomUsuario
+		dialog --title "Grupo" --msgbox "Usuario modificado exitosamente" 6 50
+		  ;;
+	      	1)
+		  echo "Cancel pressed.";;
+	    	255)
+		  if test -s $tempfile ; then
+		  cat $tempfile
+	      	else
+		  echo "ESC pressed."
+		  fi
+		  ;;
+	    	esac 
+		)
+		
+		  ;;
+	      1)
+		  echo "Cancel pressed.";;
+	    255)
+		  if test -s $tempfile ; then
+		  cat $tempfile
+	      else
+		  echo "ESC pressed."
+		  fi
+		  ;;
+	    esac
+	)
+      ;;
+    2 )
+      (
+#!/bin/sh
+		DIALOG=${DIALOG=dialog}
+		tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+		trap "rm -f $tempfile" 0 1 2 5 15
+
+		$DIALOG --title "Modificar grupo al que pertenece" --clear \
+		--inputbox "Digite el nombre del usuario a modificar" 10 30 2> $tempfile
+
+		retval=$?
+
+		case $retval in
+		0)
+		NomUsuario=`cat $tempfile`
+
+		(
+		#!/bin/sh
+	      	DIALOG=${DIALOG=dialog}
+	      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+	      	trap "rm -f $tempfile" 0 1 2 5 15
+
+	      	$DIALOG --title "Modificar grupo al que pertenece" --clear \
+	      	--inputbox "Digite el nombre del grupo al que deesea cambiar el usuario" 10 30 2> $tempfile
+
+	      	retval=$?
+
+	      	case $retval in
+	      	0)
+		NomGrupo=`cat $tempfile`
+		sudo usermod -g $NomGrupo $NomUsuario
+		dialog --title "Grupo" --msgbox "Usuario modificado exitosamente" 6 50
+		  ;;
+	      	1)
+		  echo "Cancel pressed.";;
+	    	255)
+		  if test -s $tempfile ; then
+		  cat $tempfile
+	      	else
+		  echo "ESC pressed."
+		  fi
+		  ;;
+	    	esac 
+		)
+		
+		  ;;
+	      1)
+		  echo "Cancel pressed.";;
+	    255)
+		  if test -s $tempfile ; then
+		  cat $tempfile
+	      else
+		  echo "ESC pressed."
+		  fi
+		  ;;
+	    esac
+)
+
+      ;;
+3 )
+      (
+#!/bin/sh
+		DIALOG=${DIALOG=dialog}
+		tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+		trap "rm -f $tempfile" 0 1 2 5 15
+
+		$DIALOG --title "Agregar a otro grupo" --clear \
+		--inputbox "Digite el nombre del usuario a modificar" 10 30 2> $tempfile
+
+		retval=$?
+
+		case $retval in
+		0)
+		NomUsuario=`cat $tempfile`
+
+		(
+		#!/bin/sh
+	      	DIALOG=${DIALOG=dialog}
+	      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+	      	trap "rm -f $tempfile" 0 1 2 5 15
+
+	      	$DIALOG --title "Agregar a otro grupo" --clear \
+	      	--inputbox "Digite el nombre del grupo al que deesea adicionar el usuario" 10 30 2> $tempfile
+
+	      	retval=$?
+
+	      	case $retval in
+	      	0)
+		NomGrupo=`cat $tempfile`
+		sudo usermod -a -G $NomGrupo $NomUsuario
+		dialog --title "Grupo" --msgbox "Usuario modificado exitosamente" 6 50
+		  ;;
+	      	1)
+		  echo "Cancel pressed.";;
+	    	255)
+		  if test -s $tempfile ; then
+		  cat $tempfile
+	      	else
+		  echo "ESC pressed."
+		  fi
+		  ;;
+	    	esac 
+		)
+		
+		  ;;
+	      1)
+		  echo "Cancel pressed.";;
+	    255)
+		  if test -s $tempfile ; then
+		  cat $tempfile
+	      else
+		  echo "ESC pressed."
+		  fi
+		  ;;
+	    esac
+)
+      ;;
+4 )
+      (
+#!/bin/sh
+	      	DIALOG=${DIALOG=dialog}
+	      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+	      	trap "rm -f $tempfile" 0 1 2 5 15
+
+	      	$DIALOG --title "Modificar contraseña de usuario" --clear \
+	      	--inputbox "Digite el nombre del usuario" 10 30 2> $tempfile
+
+	      	retval=$?
+
+	      	case $retval in
+	      	0)
+		NomUsuaAct=`cat $tempfile`
+		
+	(
+		#!/bin/sh
+	      	DIALOG=${DIALOG=dialog}
+	      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+	      	trap "rm -f $tempfile" 0 1 2 5 15
+
+	      	$DIALOG --title "Modificar contraseña de usuario" --clear \
+	      	--inputbox "Digite la nueva contraseña" 10 30 2> $tempfile
+
+	      	retval=$?
+
+	      	case $retval in
+	      	0)
+		PassActu=`cat $tempfile`
+		(
+#!/bin/sh
+	      	DIALOG=${DIALOG=dialog}
+	      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+	      	trap "rm -f $tempfile" 0 1 2 5 15
+
+	      	$DIALOG --title "Modificar contraseña de usuario" --clear \
+	      	--inputbox "Confirme la nueva contraseña" 10 30 2> $tempfile
+
+	      	retval=$?
+
+	      	case $retval in
+	      	0)
+		ConfPassActu=`cat $tempfile`
+		sudo passwd $NomUsuaAct
+		New UNIX password: $PassActu
+		Retype new UNIX password: $ConfPassActu
+		dialog --title "Usuario" --msgbox "Contraseña modificada exitosamente" 6 50
+		  ;;
+	      	1)
+		  echo "Cancel pressed.";;
+	    	255)
+		  if test -s $tempfile ; then
+		  cat $tempfile
+	      	else
+		  echo "ESC pressed."
+		  fi
+		  ;;
+	    	esac
+)
+		  ;;
+	      	1)
+		  echo "Cancel pressed.";;
+	    	255)
+		  if test -s $tempfile ; then
+		  cat $tempfile
+	      	else
+		  echo "ESC pressed."
+		  fi
+		  ;;
+	    	esac
+	)
+		  ;;
+	      	1)
+		  echo "Cancel pressed.";;
+	    	255)
+		  if test -s $tempfile ; then
+		  cat $tempfile
+	      	else
+		  echo "ESC pressed."
+		  fi
+		  ;;
+	    	esac
+)
+
+      ;;
+5 )
+      (
+#!/bin/sh
+	      	DIALOG=${DIALOG=dialog}
+	      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+	      	trap "rm -f $tempfile" 0 1 2 5 15
+
+	      	$DIALOG --title "Desactivar usuario" --clear \
+	      	--inputbox "Digite el nombre del usuario a Desactivar" 10 30 2> $tempfile
+
+	      	retval=$?
+
+	      	case $retval in
+	      	0)
+		NomUsuaAct=`cat $tempfile`
+		sudo usermod -L $NomUsuaAct
+		dialog --title "Usuario" --msgbox "Usuario desactivado exitosamente" 6 50
+		  ;;
+	      	1)
+		  echo "Cancel pressed.";;
+	    	255)
+		  if test -s $tempfile ; then
+		  cat $tempfile
+	      	else
+		  echo "ESC pressed."
+		  fi
+		  ;;
+	    	esac
+)
+
+      ;;
+    6 )
+(
+#!/bin/sh
+	      	DIALOG=${DIALOG=dialog}
+	      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+	      	trap "rm -f $tempfile" 0 1 2 5 15
+
+	      	$DIALOG --title "Activar usuario" --clear \
+	      	--inputbox "Digite el nombre del usuario a Activar" 10 30 2> $tempfile
+
+	      	retval=$?
+
+	      	case $retval in
+	      	0)
+		NomUsuaAct=`cat $tempfile`
+		sudo usermod -U $NomUsuaAct
+		dialog --title "Usuario" --msgbox "Usuario activado exitosamente" 6 50
+		  ;;
+	      	1)
+		  echo "Cancel pressed.";;
+	    	255)
+		  if test -s $tempfile ; then
+		  cat $tempfile
+	      	else
+		  echo "ESC pressed."
+		  fi
+		  ;;
+	    	esac
+)
+ 
+
+     ;;
+  esac
+done
+
+
+
+
+
+
+)
+
+
+
+
+      ;;
+    4 )
+(
+#!/bin/sh
+      DIALOG=${DIALOG=dialog}
+      tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+      trap "rm -f $tempfile" 0 1 2 5 15
+
+      $DIALOG --title "Eliminacion de usuarios" --clear \
+      --inputbox "Digite el nombre del usuario" 10 30 2> $tempfile
+
+      retval=$?
+
+      case $retval in
+      0)
+	nomusu=`cat $tempfile`
+	sudo userdel -r $nomusu
+        dialog --title "Usuario" --msgbox "Usuario eliminado exitosamente" 6 50
+          ;;
+      1)
+          echo "Cancel pressed.";;
+    255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      else
+          echo "ESC pressed."
+          fi
+          ;;
+    esac
+
+)
+      ;;     
+  esac
+done
+
+
+
+
+
+
+)
+      ;;
+    2 )
+(
+
+
+
+
+#!/bin/bash
+
+# while-menu-dialog: a menu driven system information program
+
+DIALOG_CANCEL=1
+DIALOG_ESC=255
+HEIGHT=0
+WIDTH=0
+
+display_result() {
+  dialog --title "$1" \
+    --no-collapse \
+    --msgbox "$result" 0 0
+}
+
+while true; do
+  exec 3>&1
+  selection=$(dialog \
+    --backtitle "Gestión" \
+    --title "Gestión de grupos" \
+    --clear \
+    --cancel-label "Cancelar" \
+    --menu "Seleccione una opción" $HEIGHT $WIDTH 4 \
+    "1" "​Listar grupos" \
+    "2" "Crear grupos nuevos" \
+    "3" "Modificar grupos" \
+    "4" "Eliminar grupos" \
+    2>&1 1>&3)
+  exit_status=$?
+  exec 3>&-
+  case $exit_status in
+    $DIALOG_CANCEL)
+      clear
+      echo "Modulo finalizada."
+      exit
+      ;;
+    $DIALOG_ESC)
+      clear
+      echo "Aplicación cancelada." >&2
+      exit 1
+      ;;
+  esac
+  case $selection in
+    0 )
+      clear
+      echo "Aplicación finalizada."
+      ;;
+    1 )
+(
+      result=$(cat /etc/group)
+      display_result "Lista de grupos"
+                   
+)
+      ;;
+    2 )
+(
+
+
+
+      #!/bin/sh
+      DIALOG=${DIALOG=dialog}
+      tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+      trap "rm -f $tempfile" 0 1 2 5 15
+
+      $DIALOG --title "Crear del grupo" --clear \
+      --inputbox "Digite el nombre del grupo" 10 30 2> $tempfile
+
+      retval=$?
+
+      case $retval in
+      0)
+	NomGrup=`cat $tempfile`
+	sudo addgroup --system $NomGrup
+        dialog --title "Grupo" --msgbox "Grupo creado exitosamente" 6 50
+          ;;
+      1)
+          echo "Cancel pressed.";;
+    255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      else
+          echo "ESC pressed."
+          fi
+          ;;
+    esac    
+
+
+
+
+)
+      ;;
+    3 )
+(
+
+
+
+#!/bin/bash
+
+# while-menu-dialog: a menu driven system information program
+
+DIALOG_CANCEL=1
+DIALOG_ESC=255
+HEIGHT=0
+WIDTH=0
+
+display_result() {
+  dialog --title "$1" \
+    --no-collapse \
+    --msgbox "$result" 0 0
+}
+
+while true; do
+  exec 3>&1
+  selection=$(dialog \
+    --backtitle "Modificacion de Grupos" \
+    --title "Menu" \
+    --clear \
+    --cancel-label "Salir" \
+    --menu "Seleccione un criterio a modificar:" $HEIGHT $WIDTH 4 \
+    "1" "Modificar Nombre" \
+    "2" "Modificar ID de grupo GID" \
+    "3" "Modificar ambos" \
+    2>&1 1>&3)
+  exit_status=$?
+  exec 3>&-
+  case $exit_status in
+    $DIALOG_CANCEL)
+      clear
+      echo "Program terminated."
+      exit
+      ;;
+    $DIALOG_ESC)
+      clear
+      echo "Program aborted." >&2
+      exit 1
+      ;;
+  esac
+  case $selection in
+    0 )
+      clear
+      echo "Program terminated."
+      ;;
+    1 )
+
+
+	(
+	#!/bin/sh
+	DIALOG=${DIALOG=dialog}
+	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+	trap "rm -f $tempfile" 0 1 2 5 15
+
+	$DIALOG --title "Modificar nombre de grupos" --clear \
+	--inputbox "Digite el nombre del grupo a modificar" 10 30 2> $tempfile
+
+	retval=$?
+
+	case $retval in
+	0)
+	NomGrup=`cat $tempfile`
+
+	(
+	#!/bin/sh
+      	DIALOG=${DIALOG=dialog}
+      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+      	trap "rm -f $tempfile" 0 1 2 5 15
+
+      	$DIALOG --title "Modificar nombre de grupos" --clear \
+      	--inputbox "Digite el nuevo nombre del grupo" 10 30 2> $tempfile
+
+      	retval=$?
+
+      	case $retval in
+      	0)
+	NueNomGrup=`cat $tempfile`
+	sudo groupmod -n $NueNomGrup $NomGrup
+        dialog --title "Grupo" --msgbox "Grupo modificado exitosamente" 6 50
+          ;;
+      	1)
+          echo "Cancel pressed.";;
+    	255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      	else
+          echo "ESC pressed."
+          fi
+          ;;
+    	esac 
+	)
+        
+          ;;
+      1)
+          echo "Cancel pressed.";;
+    255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      else
+          echo "ESC pressed."
+          fi
+          ;;
+    esac 
+	
+	
+	)
+
+
+      ;;
+    2 )
+      
+
+
+	(
+	#!/bin/sh
+	DIALOG=${DIALOG=dialog}
+	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+	trap "rm -f $tempfile" 0 1 2 5 15
+
+	$DIALOG --title "Modificar GID de grupos" --clear \
+	--inputbox "Digite el nombre del grupo a modificar" 10 30 2> $tempfile
+
+	retval=$?
+
+	case $retval in
+	0)
+	NomGrup=`cat $tempfile`
+
+	(
+	#!/bin/sh
+      	DIALOG=${DIALOG=dialog}
+      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+      	trap "rm -f $tempfile" 0 1 2 5 15
+
+      	$DIALOG --title "Modificar GID nombre de grupos" --clear \
+      	--inputbox "Digite el nuevo GID del grupo (Valor Numérico)" 10 30 2> $tempfile
+
+      	retval=$?
+
+      	case $retval in
+      	0)
+	GIDGrup=`cat $tempfile`
+	sudo groupmod -g $GIDGrup $NomGrup
+        dialog --title "Grupo" --msgbox "GID modificado exitosamente" 6 50
+          ;;
+      	1)
+          echo "Cancel pressed.";;
+    	255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      	else
+          echo "ESC pressed."
+          fi
+          ;;
+    	esac 
+	)
+        
+          ;;
+      1)
+          echo "Cancel pressed.";;
+    255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      else
+          echo "ESC pressed."
+          fi
+          ;;
+    esac 
+	
+	
+	
+	
+
+	)
+      ;;
+    3 )
+
+
+
+	(
+
+#!/bin/sh
+	DIALOG=${DIALOG=dialog}
+	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+	trap "rm -f $tempfile" 0 1 2 5 15
+
+	$DIALOG --title "Modificar nombre de grupos" --clear \
+	--inputbox "Digite el nombre del grupo a modificar" 10 30 2> $tempfile
+
+	retval=$?
+
+	case $retval in
+	0)
+	NomGrup=`cat $tempfile`
+
+	(
+	#!/bin/sh
+      	DIALOG=${DIALOG=dialog}
+      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+      	trap "rm -f $tempfile" 0 1 2 5 15
+
+      	$DIALOG --title "Modificar nombre de grupos" --clear \
+      	--inputbox "Digite el nuevo nombre del grupo" 10 30 2> $tempfile
+
+      	retval=$?
+
+      	case $retval in
+      	0)
+	NueNomGrup=`cat $tempfile`
+	(
+	#!/bin/sh
+      	DIALOG=${DIALOG=dialog}
+      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+      	trap "rm -f $tempfile" 0 1 2 5 15
+
+      	$DIALOG --title "Modificar GID de grupos" --clear \
+      	--inputbox "Digite el nuevo GID del grupo" 10 30 2> $tempfile
+
+      	retval=$?
+
+      	case $retval in
+      	0)
+	GIDGrup=`cat $tempfile`
+	sudo groupmod -g $GIDGrup -n $NueNomGrup $NomGrup
+        dialog --title "Grupo" --msgbox "Grupo modificado exitosamente" 6 50
+          ;;
+      	1)
+          echo "Cancel pressed.";;
+    	255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      	else
+          echo "ESC pressed."
+          fi
+          ;;
+    	esac 
+	)
+        dialog --title "Grupo" --msgbox "Grupo modificado exitosamente" 6 50
+          ;;
+      	1)
+          echo "Cancel pressed.";;
+    	255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      	else
+          echo "ESC pressed."
+          fi
+          ;;
+    	esac 
+	)
+        
+          ;;
+      1)
+          echo "Cancel pressed.";;
+    255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      else
+          echo "ESC pressed."
+          fi
+          ;;
+    esac
+
+
+
+
+
+	)
+
+
+
+
+
+      ;;
+  esac
+done
+
+      dialog --title "Colocar codigo" --msgbox 'Modificar grupo' 6 20
+
+
+)
+      ;;
+    4 )
+(
+
+
+#!/bin/sh
+      DIALOG=${DIALOG=dialog}
+      tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+      trap "rm -f $tempfile" 0 1 2 5 15
+
+      $DIALOG --title "Eliminar grupo" --clear \
+      --inputbox "Digite el nombre del grupo" 10 30 2> $tempfile
+
+      retval=$?
+
+      case $retval in
+      0)
+	NomGrup=`cat $tempfile`
+	sudo groupdel  $NomGrup
+        dialog --title "Grupo" --msgbox "Grupo eliminado exitosamente" 6 50
+          ;;
+      1)
+          echo "Cancel pressed.";;
+    255)
+          if test -s $tempfile ; then
+          cat $tempfile
+      else
+          echo "ESC pressed."
+          fi
+          ;;
+    esac   
+      
+	
+)
+      ;;     
+  esac
+done
+
+
+
+
+
+
+
 )
       ;;
     3 )
