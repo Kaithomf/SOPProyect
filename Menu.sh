@@ -227,7 +227,7 @@ while true; do
     "1" "​Listar usuarios" \
     "2" "Crear usuarios nuevos" \
     "3" "Modificar usuarios" \
-    "4" "Eliminar usuarios." \
+    "4" "Eliminar usuarios." \    
     2>&1 1>&3)
   exit_status=$?
   exec 3>&-
@@ -573,8 +573,8 @@ while true; do
 	      	tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
 	      	trap "rm -f $tempfile" 0 1 2 5 15
 
-	      	$DIALOG --title "Modificar contraseña de usuario" --clear \
-	      	--inputbox "Digite la nueva contraseña" 10 30 2> $tempfile
+	      	$DIALOG --title "Modificar contraseña de usuario" --clear \          
+	      	--passwordbox "Digite la nueva contraseña" 10 30 2> $tempfile
 
 	      	retval=$?
 
@@ -588,7 +588,7 @@ while true; do
 	      	trap "rm -f $tempfile" 0 1 2 5 15
 
 	      	$DIALOG --title "Modificar contraseña de usuario" --clear \
-	      	--inputbox "Confirme la nueva contraseña" 10 30 2> $tempfile
+	      	--passwordbox "Confirme la nueva contraseña" 10 30 2> $tempfile
 
 	      	retval=$?
 
@@ -1134,10 +1134,6 @@ while true; do
       ;;
   esac
 done
-
-      dialog --title "Colocar codigo" --msgbox 'Modificar grupo' 6 20
-
-
 )
       ;;
     4 )
@@ -1187,11 +1183,117 @@ done
       ;;
     3 )
 (
-      dialog --title "Colocar codigo" --msgbox 'Cuotas de disco' 6 20
-)
-      ;;     
-  esac
-done
+      #!/bin/bash
+
+      # while-menu-dialog: a menu driven system information program
+
+      DIALOG_CANCEL=1
+      DIALOG_ESC=255
+      HEIGHT=0
+      WIDTH=0
+
+      display_result() {
+        dialog --title "$1" \
+          --no-collapse \
+          --msgbox "$result" 0 0
+      }
+
+      while true; do
+        exec 3>&1
+        selection=$(dialog \
+          --backtitle "Cuotas de disco" \
+          --title "Cuotas de disco" \
+          --clear \
+          --cancel-label "Cancelar" \
+          --menu "Seleccione una opción" $HEIGHT $WIDTH 4 \
+          "1" "Crear, Modificar o eliminar cuotas de disco para usuarios" \
+          "2" "Crear, Modificar o eliminar cuotas de disco para grupos" \
+          2>&1 1>&3)
+        exit_status=$?
+        exec 3>&-
+        case $exit_status in
+          $DIALOG_CANCEL)
+            clear
+            echo "Modulo finalizado."
+            exit
+            ;;
+          $DIALOG_ESC)
+            clear
+            echo "Modulo cancelado." >&2
+            exit 1
+            ;;
+        esac
+        case $selection in
+          0 )
+            clear
+            echo "Aplicacion finalizada."
+            ;;
+          1 )
+      (
+            #!/bin/sh
+          DIALOG=${DIALOG=dialog}
+          tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+          trap "rm -f $tempfile" 0 1 2 5 15
+
+          $DIALOG --title "Crear, Modificar o eliminar cuotas de disco para usuarios" --clear \
+          --inputbox "Digite el nombre del usuario al que deesea modificar cuota de disco" 10 30 2> $tempfile
+
+          retval=$?
+
+          case $retval in
+          0)
+            NomUsuario=`cat $tempfile`
+            sudo edquota -u $NomUsuario
+            dialog --title "Cuota de disco" --msgbox "cuota de disco modificada exitosamente" 6 50
+              ;;
+                  1)
+              echo "Cancel pressed.";;
+                255)
+              if test -s $tempfile ; then
+              cat $tempfile
+                  else
+              echo "ESC pressed."
+              fi
+              ;;
+                esac 
+      )
+            ;;
+          2 )
+      (
+            #!/bin/sh
+          DIALOG=${DIALOG=dialog}
+          tempfile=`tempfile 2>/dev/null` || tempfile=/tmp/test$$
+          trap "rm -f $tempfile" 0 1 2 5 15
+
+          $DIALOG --title "Crear, Modificar o eliminar cuotas de disco para grupos" --clear \
+          --inputbox "Digite el nombre del grupo al que deesea modificar cuota de disco" 10 30 2> $tempfile
+
+          retval=$?
+
+          case $retval in
+          0)
+            NomGrupo=`cat $tempfile`
+            sudo edquota -g $NomGrupo
+            dialog --title "Cuota de disco" --msgbox "cuota de disco modificada exitosamente" 6 50
+              ;;
+                  1)
+              echo "Cancel pressed.";;
+                255)
+              if test -s $tempfile ; then
+              cat $tempfile
+                  else
+              echo "ESC pressed."
+              fi
+              ;;
+                esac 
+      )
+            ;;     
+        esac
+      done
+      )
+            ;;     
+        esac
+      done
 )      
 
 
